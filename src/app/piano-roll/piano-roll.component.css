@@ -98,3 +98,14 @@ height: 124px;
 position: absolute;
 width: 258px;
 }
+.lfoContainer{
+  margin-top: 1%;
+  margin-left: 1%;
+  top:184px;
+  left:0;
+  background: red;
+  position: absolute;
+  display: inline-block;
+  width: 347px;
+  height: 49px;
+}

@@ -18,6 +18,10 @@ export class SoundService implements Adsr {
   public filterReso = 5;
   public filterCutoff = 200;
   public filtered = false;
+  public isLfo = false;
+  public lfoWave = 'sine';
+  public rate = 2;
+  public lfoAMplitude = 100;
   constructor(public ts: TimerService) { }
 
   public playOscillator(freq) {
@@ -31,8 +35,11 @@ export class SoundService implements Adsr {
       let gainNode = this.ts.audioContext.createGain();
       let biquadFilter = this.ts.audioContext.createBiquadFilter();
       let volume = this.ts.audioContext.createGain();
+      let lfoOsc = this.ts.audioContext.createOscillator();
+      let lfoGain = this.ts.audioContext.createGain();
 
-      switch(this.waveform) {
+
+      switch (this.waveform) {
         case 'square': oscillator.type = 'square'; break;
         case 'sine': oscillator.type = 'sine'; break;
         case 'sawtooth': oscillator.type = 'sawtooth'; break;
@@ -54,12 +61,31 @@ export class SoundService implements Adsr {
       biquadFilter.gain.setValueAtTime(this.filterReso, ct);
       oscillator.frequency.setValueAtTime(freq, ct);
       volume.gain.setValueAtTime(this.gain, ct);
-      
+
+      if (this.isLfo) {
+
+
+        // set attributes on the nodes
+        lfoOsc.frequency.value = this.rate;
+        //oscillator_1.detune.value = 0;
+        switch (this.lfoWave) {
+        case 'square': lfoOsc.type = 'square'; break;
+        case 'sine': lfoOsc.type = 'sine'; break;
+        case 'sawtooth': lfoOsc.type = 'sawtooth'; break;
+        case 'triangle': lfoOsc.type = 'triangle'; break;
+      }
+       
+        lfoGain.gain.value =this.lfoAMplitude;
+
+        lfoOsc.connect(lfoGain, 0, 0);
+        lfoGain.connect(biquadFilter.frequency, 0);
+      }
+
       oscillator.connect(biquadFilter);
       biquadFilter.connect(gainNode);
       gainNode.connect(volume);
       volume.connect(this.ts.audioContext.destination);
-      
+
       oscillator.start();
       gainNode.gain.setValueAtTime(0, ct);
       gainNode.gain.linearRampToValueAtTime(1, ct + this.attack);
@@ -71,6 +97,7 @@ export class SoundService implements Adsr {
 
 
   }
+  
   private inizializza(): void {
     this.attack = 0;
     this.decay = 0.1;
