@@ -61,12 +61,12 @@ export class SoundService implements Adsr {
 
       this.castWaveform(this.lfoWave, lfoOsc);
 
-      lfoOsc.frequency.setValueAtTime(5, ct);
-      lfoGain.gain.setValueAtTime(1000, ct);
+      lfoOsc.frequency.setValueAtTime(this.lfoRate, ct);
+      lfoGain.gain.setValueAtTime(this.lfoAMplitude, ct);
 
       lfoOsc.connect(lfoGain);
-      lfoGain.connect(biquadFilter.frequency);
-
+      lfoGain.connect(oscillator.frequency);
+      lfoOsc.start();
 
       oscillator.connect(biquadFilter);
       biquadFilter.connect(gainNode);
@@ -80,6 +80,7 @@ export class SoundService implements Adsr {
       gainNode.gain.linearRampToValueAtTime(this.sustainVal, ct + this.attack + this.decay + this.sustain);
       gainNode.gain.linearRampToValueAtTime(0, ct + this.attack + this.decay + this.sustain + this.relase);
       oscillator.stop(ct + this.attack + this.decay + this.sustain + this.relase);
+      lfoOsc.stop(ct + this.attack + this.decay + this.sustain + this.relase);
     }
 
 
