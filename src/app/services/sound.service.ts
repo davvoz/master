@@ -18,9 +18,9 @@ export class SoundService implements Adsr {
   public filterReso = 5;
   public filterCutoff = 200;
   public filtered = false;
-  public isLfo = false;
+  public isLfo = true;
   public lfoWave = 'sine';
-  public rate = 2;
+  public lfoRate = 2;
   public lfoAMplitude = 100;
   constructor(public ts: TimerService) { }
 
@@ -38,13 +38,8 @@ export class SoundService implements Adsr {
       let lfoOsc = this.ts.audioContext.createOscillator();
       let lfoGain = this.ts.audioContext.createGain();
 
+      this.castWaveform(this.waveform, oscillator);
 
-      switch (this.waveform) {
-        case 'square': oscillator.type = 'square'; break;
-        case 'sine': oscillator.type = 'sine'; break;
-        case 'sawtooth': oscillator.type = 'sawtooth'; break;
-        case 'triangle': oscillator.type = 'triangle'; break;
-      }
 
       switch (this.filterType) {
         case 'lowpass': biquadFilter.type = 'lowpass'; break;
@@ -62,24 +57,16 @@ export class SoundService implements Adsr {
       oscillator.frequency.setValueAtTime(freq, ct);
       volume.gain.setValueAtTime(this.gain, ct);
 
-      if (this.isLfo) {
 
 
-        // set attributes on the nodes
-        lfoOsc.frequency.value = this.rate;
-        //oscillator_1.detune.value = 0;
-        switch (this.lfoWave) {
-        case 'square': lfoOsc.type = 'square'; break;
-        case 'sine': lfoOsc.type = 'sine'; break;
-        case 'sawtooth': lfoOsc.type = 'sawtooth'; break;
-        case 'triangle': lfoOsc.type = 'triangle'; break;
-      }
-       
-        lfoGain.gain.value =this.lfoAMplitude;
+      this.castWaveform(this.lfoWave, lfoOsc);
 
-        lfoOsc.connect(lfoGain, 0, 0);
-        lfoGain.connect(biquadFilter.frequency, 0);
-      }
+      lfoOsc.frequency.setValueAtTime(5, ct);
+      lfoGain.gain.setValueAtTime(1000, ct);
+
+      lfoOsc.connect(lfoGain);
+      lfoGain.connect(biquadFilter.frequency);
+
 
       oscillator.connect(biquadFilter);
       biquadFilter.connect(gainNode);
@@ -97,7 +84,14 @@ export class SoundService implements Adsr {
 
 
   }
-  
+  private castWaveform(waveform: String, osc: OscillatorNode) {
+    switch (this.waveform) {
+      case 'square': osc.type = 'square'; break;
+      case 'sine': osc.type = 'sine'; break;
+      case 'sawtooth': osc.type = 'sawtooth'; break;
+      case 'triangle': osc.type = 'triangle'; break;
+    }
+  }
   private inizializza(): void {
     this.attack = 0;
     this.decay = 0.1;

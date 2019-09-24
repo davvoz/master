@@ -28,7 +28,6 @@ export class Square extends Shape {
       this.getDimensioneLato(), this.getDimensioneLato());
   }
   private erase() {
-    console.log('cleaning');
     this.ctx.clearRect(this.getDimensioneLato() * this.getX(), this.getDimensioneLato() * this.getY() + this.getDimensioneLato(),
       this.getDimensioneLato(), this.getDimensioneLato());
   }

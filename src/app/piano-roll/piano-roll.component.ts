@@ -47,7 +47,8 @@ export class PianoRollComponent implements AfterViewInit {
   filterReso = 0;
   lfoWaveSelected = 'sine';
   lfoAmplitude = 100;
-  
+  lfoRate = 0;
+
   coord: Coordinates = { x: 0, y: 0 };
   @ViewChild('canvas', { static: false }) canvas: ElementRef<HTMLCanvasElement>;
   @ViewChild('canvasGui', { static: false }) canvasGui: ElementRef<HTMLCanvasElement>;
@@ -132,6 +133,8 @@ export class PianoRollComponent implements AfterViewInit {
     this.mySound.filterType = this.filterSelected;
     this.mySound.lfoWave = this.lfoWaveSelected;
     this.mySound.lfoAMplitude = this.lfoAmplitude;
+    this.mySound.lfoRate = this.lfoRate;
+    this.mySound.isLfo = true;
     this.mySound.playOscillator(this.enemies[index].getTune());
   }
   private populateEnemiesArray(): void {

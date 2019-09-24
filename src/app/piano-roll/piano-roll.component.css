@@ -30,7 +30,7 @@ border:2px solid red;
  .stage {
    
     width: 1000px;
-    height: 240px;
+    height: 260px;
     position: relative;
     border: 2px solid black;
     align-items: center;
@@ -41,7 +41,7 @@ border:2px solid red;
   position: absolute;
   background: grey;
   width: 359px;
-  height: 240px;
+  height: 260px;
   font-family: monospace;
 }
 
@@ -99,13 +99,14 @@ position: absolute;
 width: 258px;
 }
 .lfoContainer{
+  border :1px solid black;
   margin-top: 1%;
   margin-left: 1%;
   top:184px;
   left:0;
-  background: red;
+  background: grey;
   position: absolute;
   display: inline-block;
   width: 347px;
-  height: 49px;
+  height: 67px;
 }
