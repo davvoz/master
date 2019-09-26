@@ -8,6 +8,9 @@ import { UserGui } from '../classes/user-gui';
 import { Cursor } from '../classes/cursor';
 import { LineOfSquares } from '../classes/line-of-squares';
 import { Coordinates, Collision } from '../interfaces/interfaces';
+import { ChannelMergerService } from '../services/channel-merger.service';
+
+
 @Component({
   selector: 'app-piano-roll',
   templateUrl: './piano-roll.component.html',
