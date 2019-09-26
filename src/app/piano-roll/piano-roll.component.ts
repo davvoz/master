@@ -65,7 +65,7 @@ export class PianoRollComponent implements AfterViewInit {
   waveforms = ['square', 'sine', 'sawtooth', 'triangle'];
   filterType = ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'peaking', 'notch', 'allpass']
 
-  constructor(public myTimer: TimerService, public mySound: SoundService, public ngZone: NgZone) {
+  constructor(public myTimer: TimerService, public mySound: SoundService ,public myChannelMerger :ChannelMergerService) {
     this.coord.x = 0;
     this.coord.y = 0;
     this.myTimer.speed = 180;
