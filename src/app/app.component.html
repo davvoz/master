@@ -8,6 +8,7 @@
 		</td>
     <td><app-timer-monitor></app-timer-monitor></td>
 		<td><button (click)="add()">add </button></td>
+    <td><input type="range" min="0" max="1" step="0.01" [(ngModel)]="myTimer.gain"/> </td>
   </tr>
 </table>
 <div *ngFor="let p of pianoRolls;let i = index" style="position:relative;">

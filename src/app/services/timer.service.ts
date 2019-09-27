@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { TickResponse } from '../interfaces/interfaces';
+import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
+import { TickResponse } from "../interfaces/interfaces";
 @Injectable()
 export class TimerService {
   numberOfTraks = 0;
@@ -9,15 +9,25 @@ export class TimerService {
   noteTime = 0;
   timeoutId;
   tic = 0;
-  private firstStep = false;
-  public speed: number;
-  public isPlayed: boolean;
-  private timer;
-  private step: boolean;
-  public steps: number;
+  firstStep = false;
+  speed: number;
+  isPlayed: boolean;
+  timer;
+  step: boolean;
+  steps: number;
+  merger: ChannelMergerNode;
+  gain = 1;
+  private volume: GainNode;
   private numberOfTraksSource = new BehaviorSubject<number>(0);
-  private trackStateModel: TickResponse = { traksAreOn: [], timePosition: 0, isStarted: true, audioContextTime: 0 };
-  private trackStateSource = new BehaviorSubject<TickResponse>(this.trackStateModel);
+  private trackStateModel: TickResponse = {
+    traksAreOn: [],
+    timePosition: 0,
+    isStarted: true,
+    audioContextTime: 0
+  };
+  private trackStateSource = new BehaviorSubject<TickResponse>(
+    this.trackStateModel
+  );
   trackStateItem$ = this.trackStateSource.asObservable();
   public audioContext: AudioContext;
   constructor() {
@@ -27,6 +37,9 @@ export class TimerService {
     this.step = false;
     this.steps = 0;
     this.speed = 50;
+    this.volume = this.audioContext.createGain();
+    this.volume.gain.setValueAtTime(this.gain, this.audioContext.currentTime);
+    this.merger = this.audioContext.createChannelMerger(16);
   }
   addTrack() {
     this.numberOfTraks++;
@@ -40,7 +53,6 @@ export class TimerService {
     //  this.trackStateSource.next({ soundOn: this.trackStateModel.soundOn, trackIndex: this.steps })
   }
   play() {
-
     this.isPlayed = true;
     this.audioContext.resume();
     this.scheduleNote();
@@ -60,13 +72,13 @@ export class TimerService {
     let contextPlayTime;
     let currentTime = this.audioContext.currentTime;
     currentTime -= this.startTime;
-    while (this.noteTime < currentTime + 0.200) {
+    while (this.noteTime < currentTime + 0.2) {
       contextPlayTime = this.noteTime + this.startTime;
       this.changeStateTrack(contextPlayTime);
       this.nextNote();
     }
     this.timer = setTimeout(this.scheduleNote.bind(this), 0);
-    
+
     // this.timeoutId = requestAnimationFrame(this.scheduleNote);
   }
   private nextNote() {
@@ -82,6 +94,8 @@ export class TimerService {
       isStarted: true,
       audioContextTime: pt
     });
-    this.steps >= this.maxStep ? (this.step = true, this.steps = 0) : (this.step = true, this.steps++);
+    this.steps >= this.maxStep
+      ? ((this.step = true), (this.steps = 0))
+      : ((this.step = true), this.steps++);
   }
 }

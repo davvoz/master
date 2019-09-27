@@ -71,7 +71,10 @@ export class SoundService implements Adsr {
       oscillator.connect(biquadFilter);
       biquadFilter.connect(gainNode);
       gainNode.connect(volume);
-      volume.connect(this.ts.audioContext.destination);
+      volume.connect(this.ts.merger,0,0);
+      volume.connect(this.ts.merger,0,1);
+
+
 
       oscillator.start();
       gainNode.gain.setValueAtTime(0, ct);
