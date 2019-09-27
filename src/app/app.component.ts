@@ -14,16 +14,22 @@ import { AnalizerService } from "./services/analizer.service";
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"]
 })
-export class AppComponent {
-  @ViewChild("canvas", { static: false }) analizer: ElementRef<
+export class AppComponent implements AfterViewInit {
+  @ViewChild("analizer", { static: false }) analizer: ElementRef<
     HTMLCanvasElement
   >;
+  private ctx: CanvasRenderingContext2D;
+
   pianoRolls = ["pR"];
   constructor(
     public myTimer: TimerService,
     public myAnalizer: AnalizerService
-    
   ) {}
+  ngAfterViewInit() {
+    this.myAnalizer = new AnalizerService(this.myTimer);
+    this.ctx = this.analizer.nativeElement.getContext("2d");
+    this.drawAnalizer();
+  }
   add() {
     this.myTimer.addTrack();
     this.myTimer.steps = 0;
@@ -41,7 +47,7 @@ export class AppComponent {
     );
   }
   drawAnalizer() {
-   this.myAnalizer.canvasCtx = this.analizer.nativeElement.getContext("2d");
+    this.myAnalizer.canvasCtx = this.ctx;
     this.myAnalizer.draw();
   }
 }

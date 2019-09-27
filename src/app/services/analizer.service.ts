@@ -19,7 +19,7 @@ export class AnalizerService {
   }
 
   draw() {
-    this.drawVisual = requestAnimationFrame(this.draw);
+    this.drawVisual = requestAnimationFrame(this.draw());
     console.log("draa");
      
     this.analyser.getByteTimeDomainData(this.dataArray);
