@@ -7,6 +7,9 @@ export class AnalizerService {
   bufferLength;
   dataArray;
   drawVisual;
+  canvas;
+  canvasCtx ;
+ 
   constructor(public myTimer: TimerService) {
     this.analyser = this.myTimer.audioContext.createAnalyser();
     this.analyser.fftSize = 2048;
@@ -15,18 +18,19 @@ export class AnalizerService {
     this.analyser.getByteTimeDomainData(this.dataArray);
   }
 
-  draw(canvasCtx) {
+  draw() {
     this.drawVisual = requestAnimationFrame(this.draw);
-
+    console.log("draa");
+     
     this.analyser.getByteTimeDomainData(this.dataArray);
 
-    canvasCtx.fillStyle = "rgb(200, 200, 200)";
-    canvasCtx.fillRect(0, 0, 10, 10);
+     this.canvasCtx.fillStyle = "rgb(200, 200, 200)";
+     this.canvasCtx.fillRect(0, 0, 10, 10);
 
-    canvasCtx.lineWidth = 2;
-    canvasCtx.strokeStyle = "rgb(0, 0, 0)";
+    this. canvasCtx.lineWidth = 2;
+     this.canvasCtx.strokeStyle = "rgb(0, 0, 0)";
 
-    canvasCtx.beginPath();
+     this.canvasCtx.beginPath();
 
     var sliceWidth = (10 * 1.0) / this.bufferLength;
     var x = 0;
@@ -36,15 +40,15 @@ export class AnalizerService {
       var y = (v * 10) / 2;
 
       if (i === 0) {
-        canvasCtx.moveTo(x, y);
+        this. canvasCtx.moveTo(x, y);
       } else {
-        canvasCtx.lineTo(x, y);
+         this.canvasCtx.lineTo(x, y);
       }
 
       x += sliceWidth;
     }
 
-    canvasCtx.lineTo(100, 20 / 2);
-    canvasCtx.stroke();
+     this.canvasCtx.lineTo(100, 20 / 2);
+     this.canvasCtx.stroke();
   }
 }
