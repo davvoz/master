@@ -13,11 +13,12 @@ import { SamplesLibraryService } from './services/samples-library.service';
 import { PianoRollSamplerComponent } from './piano-roll-sampler/piano-roll-sampler.component';
 import { SamplerService } from './services/sampler.service';
 import { ChannelMergerService } from './services/channel-merger.service';
+import { AnalizerService } from './services/analizer.service';
 
 @NgModule({
   imports:      [ BrowserModule, FormsModule ],
   declarations: [ AppComponent, TimerMonitorComponent, SpeedControlComponent, PianoRollComponent, StartStopComponent, PianoRollSamplerComponent ],
   bootstrap:    [ AppComponent ],
-  providers: [SoundService, TimerService, SamplesLibraryService, SamplerService, ChannelMergerService, ChannelMergerService]
+  providers: [SoundService, TimerService, SamplesLibraryService, SamplerService, ChannelMergerService, ChannelMergerService, AnalizerService]
 })
 export class AppModule { }

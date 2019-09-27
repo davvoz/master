@@ -17,7 +17,7 @@ export class TimerService {
   steps: number;
   merger: ChannelMergerNode;
   gain = 1;
-  private volume: GainNode;
+  volume: GainNode;
   private numberOfTraksSource = new BehaviorSubject<number>(0);
   private trackStateModel: TickResponse = {
     traksAreOn: [],
@@ -40,6 +40,8 @@ export class TimerService {
     this.volume = this.audioContext.createGain();
     this.volume.gain.setValueAtTime(this.gain, this.audioContext.currentTime);
     this.merger = this.audioContext.createChannelMerger(16);
+    this.merger.connect(this.volume);
+    this.volume.connect(this.audioContext.destination);
   }
   addTrack() {
     this.numberOfTraks++;
