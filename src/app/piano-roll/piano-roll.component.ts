@@ -16,6 +16,7 @@ import { Cursor } from "../classes/cursor";
 import { LineOfSquares } from "../classes/line-of-squares";
 import { Coordinates, Collision } from "../interfaces/interfaces";
 import { ChannelMergerService } from "../services/channel-merger.service";
+import {PianoLabel} from '../classes/piano-label';
 
 @Component({
   selector: "app-piano-roll",
@@ -128,7 +129,14 @@ export class PianoRollComponent implements AfterViewInit {
     this.ctx = this.canvas.nativeElement.getContext("2d");
     this.ctxLine = this.canvasLine.nativeElement.getContext("2d");
     this.ctxPianoLabel = this.pianoLabelCanvas.nativeElement.getContext("2d");
-
+    // this.pianoLabel = new PianoLabel( this.lato,
+    //   -1,
+    //   this.ctxLine,
+    //   {x:0,y:0},
+    //   0,
+    //   100,
+    //   24
+    // ));
     this.myLine = new LineOfSquares(
       this.lato,
       -1,

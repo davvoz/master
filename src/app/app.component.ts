@@ -28,7 +28,7 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.myAnalizer = new AnalizerService(this.myTimer);
     this.ctx = this.analizer.nativeElement.getContext("2d");
-    this.drawAnalizer();
+    //this.drawAnalizer();
   }
   add() {
     this.myTimer.addTrack();
