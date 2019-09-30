@@ -5,6 +5,8 @@
 
 	<canvas #canvasLine width="640" height="240" (click)="handleChange($event)" class="game-layer"></canvas>
 
+  	<canvas #pianoLabel width="20" height="240" (click)="handleChange($event)" class="pianoLabel-layer"></canvas>
+
 	<div class="controlli">
 		<div class="syntHeader">
 			<span class="inOutContainer" ><span class="pallino" [ngStyle]="{'background-color':getColor()}">
