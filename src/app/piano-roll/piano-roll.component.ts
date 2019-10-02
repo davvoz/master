@@ -16,8 +16,8 @@ import { Cursor } from "../classes/cursor";
 import { LineOfSquares } from "../classes/line-of-squares";
 import { Coordinates, Collision } from "../interfaces/interfaces";
 import { ChannelMergerService } from "../services/channel-merger.service";
-import {PianoLabel} from '../classes/piano-label';
-
+import { PianoLabel } from "../classes/piano-label";
+import {Octave} from "../classes/octave";
 @Component({
   selector: "app-piano-roll",
   templateUrl: "./piano-roll.component.html",
@@ -32,32 +32,7 @@ import {PianoLabel} from '../classes/piano-label';
   styleUrls: ["./piano-roll.component.css"]
 })
 export class PianoRollComponent implements AfterViewInit {
-  freq = [
-    110.0,
-    116.54,
-    123.47,
-    130.81,
-    138.59,
-    146.83,
-    155.56,
-    164.81,
-    174.61,
-    185.0,
-    196.0,
-    207.65,
-    277.18,
-    293.66,
-    311.13,
-    329.63,
-    349.23,
-    369.99,
-    392.0,
-    415.3,
-    440.0,
-    466.16,
-    493.88,
-    523.25
-  ];
+  freq = [];
   key;
   @HostListener("document:keypress", ["$event"])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -101,7 +76,7 @@ export class PianoRollComponent implements AfterViewInit {
   userGui: UserGui;
   enemies: Square[] = [];
   myLine: LineOfSquares;
-  pianoLabel:PianoLabel;
+  pianoLabel: PianoLabel;
   waveSelected = "square";
   filterSelected = "allpass";
   waveforms = ["square", "sine", "sawtooth", "triangle"];
@@ -123,6 +98,7 @@ export class PianoRollComponent implements AfterViewInit {
     this.coord.x = 0;
     this.coord.y = 0;
     this.myTimer.speed = 180;
+    this.createScale();
   }
   ngAfterViewInit() {
     this.ctxGui = this.canvasGui.nativeElement.getContext("2d");
@@ -199,6 +175,18 @@ export class PianoRollComponent implements AfterViewInit {
         }
       }
     }
+  }
+  createScale() {
+    const A4 = 440;
+    let scale = [];
+
+    for (let i = 0; i < 1; i++) {
+      let a = A4 * Math.pow(2, i);
+      let octave = new Octave(a);
+      this.freq.push(octave.getArray());
+      scale.push(octave);
+    }
+    console.log(scale,this.freq);
   }
   public playStep(index: number) {
     this.mySound.attack = this.attack;
